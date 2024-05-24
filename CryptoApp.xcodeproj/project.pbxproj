@@ -19,6 +19,7 @@
 		DFF7DF182C01216C004BE685 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DFF7DF1A2C01216D004BE685 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DFF7DF1D2C01216D004BE685 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DFF7DF242C012180004BE685 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +36,7 @@
 		DFF7DF0A2C01216C004BE685 = {
 			isa = PBXGroup;
 			children = (
+				DFF7DF242C012180004BE685 /* README.md */,
 				DFF7DF152C01216C004BE685 /* CryptoApp */,
 				DFF7DF142C01216C004BE685 /* Products */,
 			);

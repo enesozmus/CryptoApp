@@ -21,6 +21,8 @@
 		DFE3E27D2C01FD4E0011F363 /* CoinImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE3E27C2C01FD4E0011F363 /* CoinImageViewModel.swift */; };
 		DFE3E27F2C01FE8D0011F363 /* CoinImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE3E27E2C01FE8D0011F363 /* CoinImageService.swift */; };
 		DFE3E2812C02087D0011F363 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE3E2802C02087D0011F363 /* LocalFileManager.swift */; };
+		DFE3E2832C0221230011F363 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE3E2822C0221230011F363 /* SearchBarView.swift */; };
+		DFE3E2852C0226F30011F363 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE3E2842C0226F30011F363 /* UIApplication.swift */; };
 		DFF7DF172C01216C004BE685 /* CryptoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF7DF162C01216C004BE685 /* CryptoAppApp.swift */; };
 		DFF7DF1B2C01216D004BE685 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF7DF1A2C01216D004BE685 /* Assets.xcassets */; };
 		DFF7DF1E2C01216D004BE685 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFF7DF1D2C01216D004BE685 /* Preview Assets.xcassets */; };
@@ -42,6 +44,8 @@
 		DFE3E27C2C01FD4E0011F363 /* CoinImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinImageViewModel.swift; sourceTree = "<group>"; };
 		DFE3E27E2C01FE8D0011F363 /* CoinImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinImageService.swift; sourceTree = "<group>"; };
 		DFE3E2802C02087D0011F363 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		DFE3E2822C0221230011F363 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		DFE3E2842C0226F30011F363 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		DFF7DF132C01216C004BE685 /* CryptoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFF7DF162C01216C004BE685 /* CryptoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAppApp.swift; sourceTree = "<group>"; };
 		DFF7DF1A2C01216D004BE685 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 			children = (
 				DFE3E2792C01FD1B0011F363 /* CoinImage */,
 				DF81C6E32C01356C00093F1B /* Home */,
+				DFE3E2822C0221230011F363 /* SearchBarView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -209,8 +214,9 @@
 			isa = PBXGroup;
 			children = (
 				DFF7DF262C0124F1004BE685 /* Color.swift */,
-				DF81C6EF2C014D1B00093F1B /* PreviewProvider.swift */,
 				DF81C6F32C01535700093F1B /* Double.swift */,
+				DF81C6EF2C014D1B00093F1B /* PreviewProvider.swift */,
+				DFE3E2842C0226F30011F363 /* UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -285,6 +291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFE3E2852C0226F30011F363 /* UIApplication.swift in Sources */,
 				DFE3E27B2C01FD270011F363 /* CoinImageView.swift in Sources */,
 				DF81C6F22C01503200093F1B /* CoinRowView.swift in Sources */,
 				DF81C6E12C01340000093F1B /* HomeView.swift in Sources */,
@@ -300,6 +307,7 @@
 				DFE3E2782C01EFC60011F363 /* NetworkingManager.swift in Sources */,
 				DFF7DF272C0124F1004BE685 /* Color.swift in Sources */,
 				DFE3E27F2C01FE8D0011F363 /* CoinImageService.swift in Sources */,
+				DFE3E2832C0221230011F363 /* SearchBarView.swift in Sources */,
 				DF415FF02C01DFB1006DD8C9 /* CoinDataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

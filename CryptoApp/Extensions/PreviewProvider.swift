@@ -20,6 +20,8 @@ class DeveloperPreview {
     // ✅ We can ensure that we can only initialize it from within the class.
     private init() { }
     
+    let homeVM: HomeViewModel = HomeViewModel()
+    
     let coin: CoinModel = CoinModel(
         id: "bitcoin",
         symbol: "btc",

@@ -19,11 +19,16 @@ struct HomeView: View {
             // content layer
             VStack {
                 homeHeader
+                HomeStatisticView(showPortfolio: $showPortfolio)
                 SearchBarView(searchText: $vm.searchText)
                 columnTitles
                 if !showPortfolio {
-                    allCoinLists
-                        .transition(.move(edge: .leading))
+                    if vm.allCoins.isEmpty {
+                        ProgressView()
+                    } else {
+                        allCoinLists
+                            .transition(.move(edge: .leading))
+                    }
                 } else {
                     portfolioCoinLists
                         .transition(.move(edge: .trailing))

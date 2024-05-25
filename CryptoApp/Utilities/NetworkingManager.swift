@@ -21,6 +21,20 @@ class NetworkingManager {
             }
         }
     }
+    static func download(url: URL) -> AnyPublisher<Data, Error> {
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap({ try handleURLResponse(output: $0, url: url) })
+            .retry(3)
+            .eraseToAnyPublisher()
+    }
+    static func handleURLResponse(output: URLSession.DataTaskPublisher.Output, url: URL) throws -> Data {
+        guard let response = output.response as? HTTPURLResponse,
+              response.statusCode >= 200 && response.statusCode < 300 else {
+            throw NetworkingError.badURLResponse(url: url)
+        }
+        
+        return output.data
+    }
     static func download<T>(url: URL, convertTo type: T.Type) -> AnyPublisher<T, Error> where T: Decodable {
         return URLSession.shared.dataTaskPublisher(for: url)
             .tryMap({ try handleURLResponse(output: $0, url: url) })
@@ -28,12 +42,6 @@ class NetworkingManager {
             .retry(3)
             .eraseToAnyPublisher()
     }
-    //    static func download(url: URL) -> AnyPublisher<Data, Error> {
-    //        return URLSession.shared.dataTaskPublisher(for: url)
-    //            .tryMap({ try handleURLResponse(output: $0, url: url) })
-    //            .retry(3)
-    //            .eraseToAnyPublisher()
-    //    }
     static func handleURLResponse<T>(output: URLSession.DataTaskPublisher.Output, url: URL) throws -> T where T: Decodable {
         guard let response = output.response as? HTTPURLResponse,
               response.statusCode >= 200 && response.statusCode < 300 else {

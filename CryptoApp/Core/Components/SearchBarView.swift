@@ -38,23 +38,8 @@ struct SearchBarView: View {
                             .layoutPriority(-1)
                             .zIndex(-1)
                     }
-                    
                     ,alignment: .trailing
                 )
-            //                .overlay(
-            //                    Image(systemName: "xmark.circle.fill")
-            //                        .padding()
-            //                        .offset(x: 10)
-            //                        .foregroundStyle(Color.theme.accent)
-            //                        .opacity(searchText.isEmpty ? 0.0 : 1.0)
-            //                        .contentShape(Rectangle())
-            //                        .onTapGesture {
-            //                            //UIApplication.shared.endEditing()
-            //                            searchText = ""
-            //                        }
-            //
-            //                    ,alignment: .trailing
-            //                )
         }
         .font(.headline)
         .padding()

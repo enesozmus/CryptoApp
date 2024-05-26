@@ -38,10 +38,8 @@ struct ManagePortfolioView: View {
                         trailingNavBarButtons
                     }
                 }
-                .onChange(of: vm.searchText) { oldValue, newValue in
-                    //print("Old value \(oldValue)")
-                    //print("New value \(newValue)")
-                    if newValue == "" {
+                .onChange(of: vm.searchText) {
+                    if vm.searchText == "" {
                         removeSelectedCoin()
                     }
                 }
@@ -62,13 +60,13 @@ extension ManagePortfolioView {
     private var coinLogoList: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 8) {
-                ForEach(vm.allCoins) { coin in
+                ForEach(vm.searchText.isEmpty ? vm.portfolioCoins : vm.allCoins) { coin in
                     CoinLogoView(coin: coin)
                         .frame(width: 75)
                         .padding(4)
                         .onTapGesture {
                             withAnimation(.easeIn) {
-                                selectedCoin = coin
+                                updateSelectedCoin(coin: coin)
                             }
                         }
                         .background(
@@ -112,11 +110,15 @@ extension ManagePortfolioView {
             Image(systemName: "checkmark")
                 .opacity(showCheckmark ? 1.0 : 0.0)
             Button {
-                //saveButtonPressed()
+                saveButtonPressed()
             } label: {
                 Text("Save".uppercased())
             }
-            .opacity((selectedCoin != nil && selectedCoin?.currentHoldings != Double(quantityText)) ? 1.0 : 0.0)
+            .opacity(
+                (selectedCoin != nil && selectedCoin?.currentHoldings != Double(quantityText.replacingOccurrences(of: ",", with: ".")))
+                ? 1.0
+                : 0.0
+            )
         }
         .font(.headline)
     }
@@ -136,17 +138,21 @@ extension ManagePortfolioView {
     
     
     private func getCurrentValue() -> Double {
-        if let quantity = Double(quantityText) {
+        if let quantity = Double(quantityText.replacingOccurrences(of: ",", with: ".")) {
             return quantity * (selectedCoin?.currentPrice ?? 0)
         }
-        return 0
+        return 0.0
     }
     
     
     private func saveButtonPressed() {
-        guard let coin = selectedCoin else { return }
+        guard
+            let coin = selectedCoin,
+            let amount = Double(quantityText.replacingOccurrences(of: ",", with: "."))
+        else { return }
         
         // save to portfolio
+        vm.updatePortfolio(coin: coin, amount: amount)
         
         // show checkmark
         withAnimation(.easeIn) {

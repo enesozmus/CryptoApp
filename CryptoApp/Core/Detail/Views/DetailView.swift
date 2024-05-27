@@ -13,22 +13,25 @@ struct DetailLoadingView: View {
     
     var body: some View {
         if let coin = selectedCoin {
-            DetailView(selectedCoin: coin)
+            DetailView(coin: coin)
         }
     }
 }
 
 struct DetailView: View {
     
-    let selectedCoin: CoinModel
+    @StateObject private var vm: DetailViewModel
     
-    init(selectedCoin: CoinModel) {
-        self.selectedCoin = selectedCoin
-        print("Initializing Detail View for \(selectedCoin.name)")
+    init(coin: CoinModel) {
+        _vm = StateObject(wrappedValue: DetailViewModel(coin: coin))
+        print("Initializing Detail View for \(coin.name)")
     }
     
     var body: some View {
-        Text(selectedCoin.name)
+        if let coinDescription = vm.coinDescription,
+           !coinDescription.isEmpty {
+            Text(coinDescription)
+        }
     }
     
     //    @Binding var selectedCoin: CoinModel?
@@ -46,5 +49,5 @@ struct DetailView: View {
 }
 
 #Preview {
-    DetailView(selectedCoin: DeveloperPreview.instance.coin)
+    DetailView(coin: DeveloperPreview.instance.coin)
 }

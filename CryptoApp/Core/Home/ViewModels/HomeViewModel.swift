@@ -18,19 +18,22 @@ class HomeViewModel: ObservableObject {
     @Published var statistics: [StatisticModel] = []
     
     @Published var searchText: String = ""
+    @Published var isLoading: Bool = false
     
     private let coinService: CoinDataService = CoinDataService()
-    private let marketService: MarketDataService = MarketDataService()
     private let portfolioService: PortfolioDataService = PortfolioDataService()
+    private let marketService: MarketDataService = MarketDataService()
+    
     private var cancellables = Set<AnyCancellable>()
     
     init() {
         addSubscribers()
     }
     
+    // MARK: Function - Subscribers
     func addSubscribers() {
         
-        // updates allCoins
+        // 🟥 updates allCoins
         $searchText
             .combineLatest(coinService.$allCoins)
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
@@ -40,15 +43,7 @@ class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        // updates marketData
-        marketService.$marketData
-            .map(mapGlobalMarketData)
-            .sink { [weak self] (returnedStatistics) in
-                self?.statistics = returnedStatistics
-            }
-            .store(in: &cancellables)
-        
-        // update portfolioCoins
+        // 🟥 update portfolioCoins
         $allCoins
             .combineLatest(portfolioService.$savedEntities)
             .map(mapAllCoinsToPortfolioCoins)
@@ -57,7 +52,19 @@ class HomeViewModel: ObservableObject {
                 self.portfolioCoins = returnedCoins
             }
             .store(in: &cancellables)
+        
+        // 🟥 updates marketData
+        marketService.$marketData
+            .combineLatest($portfolioCoins)
+            .map(mapGlobalMarketData)
+            .sink { [weak self] (returnedStatistics) in
+                self?.statistics = returnedStatistics
+                self?.isLoading = false
+            }
+            .store(in: &cancellables)
     }
+    
+    // MARK: Other Functions
     private func filterCoins(text: String, coins: [CoinModel]) -> [CoinModel] {
         guard !text.isEmpty else {
             return coins
@@ -69,18 +76,6 @@ class HomeViewModel: ObservableObject {
             coin.id.lowercased().contains(lowercasedText)
         }
     }
-    private func mapGlobalMarketData(marketDataModel: MarketDataModel?) -> [StatisticModel] {
-        var stats: [StatisticModel] = []
-        guard let data = marketDataModel else {
-            return stats
-        }
-        let marketCap = StatisticModel(title: "Market Cap", value: data.marketCap, percentageChange: data.marketCapChangePercentage24HUsd)
-        let volume = StatisticModel(title: "24h Volume", value: data.volume)
-        let btcDominance = StatisticModel(title: "BTC Dominance", value: data.btcDominance)
-        let portfolio = StatisticModel(title: "Portfolio Value", value: "$0.00", percentageChange: 0)
-        stats.append(contentsOf: [marketCap, volume, btcDominance, portfolio])
-        return stats;
-    }
     private func mapAllCoinsToPortfolioCoins(allCoins: [CoinModel], portfolioEntities: [PortfolioEntity]) -> [CoinModel] {
         allCoins
             .compactMap { (coin) -> CoinModel? in
@@ -90,7 +85,52 @@ class HomeViewModel: ObservableObject {
                 return coin.updateHoldings(amount: entity.amount)
             }
     }
+    private func mapGlobalMarketData(marketDataModel: MarketDataModel?, portfolioCoins: [CoinModel]) -> [StatisticModel] {
+        var stats: [StatisticModel] = []
+        
+        guard let data = marketDataModel else {
+            return stats
+        }
+        
+        let marketCap = StatisticModel(title: "Market Cap", value: data.marketCap, percentageChange: data.marketCapChangePercentage24HUsd)
+        let volume = StatisticModel(title: "24h Volume", value: data.volume)
+        let btcDominance = StatisticModel(title: "BTC Dominance", value: data.btcDominance)
+        
+        let portfolioValue = portfolioCoins
+                                .map({ $0.currentHoldingsValue })
+                                .reduce(0, +)
+        
+        let previousValue = portfolioCoins
+                                .map { (coin) -> Double in
+                                    let currentValue = coin.currentHoldingsValue
+                                    let percentChange = coin.priceChangePercentage24H ?? 0 / 100
+                                    let previousValue = currentValue / (1 + percentChange)
+                                    return previousValue
+                                }
+                                .reduce(0, +)
+        
+        let percentageChange = ((portfolioValue - previousValue) / previousValue)
+        
+        let portfolio = StatisticModel(
+                                title: "Portfolio Value",
+                                value: portfolioValue.asCurrencyWith2Decimals(),
+                                percentageChange: percentageChange)
+        
+        stats.append(contentsOf: [
+            marketCap,
+            volume,
+            btcDominance,
+            portfolio
+        ])
+        return stats
+    }
     func updatePortfolio(coin: CoinModel, amount: Double) {
         portfolioService.updatePortfolio(coin: coin, amount: amount)
+    }
+    func reloadData() {
+        isLoading = true
+        coinService.getCoins()
+        marketService.getMarketData()
+        HapticManager.notification(type: .success)
     }
 }

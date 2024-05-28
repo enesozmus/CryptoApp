@@ -2,6 +2,9 @@
 > * We will build a cryptocurrency application that downloads live price data from an API and uses Core Data to save the current user's portfolio.
 > * As usual, we will use a MVVM architecture pattern to organize our files and keep our code as efficient as possible!
 
+## ⚙️ Preview:
+https://github.com/enesozmus/CryptoApp/assets/94680591/7c0f11fd-c48f-4308-a597-bb31f0609153
+
 ## ⚙️ App features:
 <details>
   

@@ -12,6 +12,7 @@ struct HomeView: View {
     @EnvironmentObject private var vm: HomeViewModel
     @State private var showPortfolio: Bool = false // animate
     @State private var showPortfolioView: Bool = false // new sheet
+    @State private var showSettingsView: Bool = false  // new sheet
     @State private var selectedCoin: CoinModel? = nil
     @State private var showDetailView: Bool = false
     
@@ -49,6 +50,9 @@ struct HomeView: View {
                 }
                 Spacer(minLength: 0)
             }
+            .sheet(isPresented: $showSettingsView, content: {
+                SettingsView()
+            })
         }
     }
 }
@@ -69,7 +73,7 @@ extension HomeView {
                     if showPortfolio {
                         showPortfolioView.toggle()
                     } else {
-                        // ...
+                        showSettingsView.toggle()
                     }
                 }
                 .background(CircleButtonAnimationView(animate: $showPortfolio))
@@ -153,13 +157,6 @@ extension HomeView {
                         .onTapGesture {
                             segue(coin: coin)
                         }
-                    //                NavigationLink {
-                    //                    DetailView(coin: coin)
-                    //                } label: {
-                    //                    CoinRowView(coin: coin, showHoldingsColumn: false)
-                    //                        .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
-                    //                        .listRowBackground(Color.theme.background)
-                    //                }
                 }
             }
             .navigationDestination(isPresented: $showDetailView, destination: {

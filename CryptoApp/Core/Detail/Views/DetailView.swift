@@ -91,13 +91,12 @@ extension DetailView {
                         .foregroundStyle(Color.theme.secondaryText)
                     
                     Button {
-                        withAnimation(.easeInOut) {
-                            showFullDescription.toggle()
-                        }
+                        showFullDescription.toggle()
                     } label: {
                         Text(showFullDescription ? "Less" : "Read more..")
                             .font(.caption)
                             .fontWeight(.bold)
+                            .animation(showFullDescription ? Animation.easeInOut : .none, value: showFullDescription)
                             .padding(.vertical, 4)
                     }
                     .tint(.blue)

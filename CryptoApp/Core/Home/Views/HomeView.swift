@@ -34,6 +34,7 @@ struct HomeView: View {
                 if !showPortfolio {
                     if vm.allCoins.isEmpty {
                         ProgressView()
+                            .tint(Color.theme.secondaryText)
                     } else {
                         allCoinLists
                             .transition(.move(edge: .leading))
@@ -184,6 +185,7 @@ extension HomeView {
                         segue(coin: coin)
                     }
             }
+            .onDelete(perform: removeCoin)
         }
         .listStyle(PlainListStyle())
     }
@@ -194,5 +196,11 @@ extension HomeView {
             .fontWeight(.medium)
             .multilineTextAlignment(.center)
             .padding(50)
+    }
+    private func removeCoin(at offsets: IndexSet) {
+        for offset in offsets {
+            let coin = vm.portfolioCoins[offset]
+            vm.deleteCoinFromPortfolio(coin: coin)
+        }
     }
 }

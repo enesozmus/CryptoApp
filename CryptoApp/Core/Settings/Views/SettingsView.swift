@@ -37,17 +37,23 @@ struct SettingsView: View {
                     applicationSection
                         .listRowBackground(Color.theme.background.opacity(0.5))
                 }
+                .navigationBarTitleDisplayMode(.inline)
+                .font(.headline)
+                .listStyle(.grouped)
+                .tint(Color.blue)
             }
-            .font(.headline)
-            .tint(.blue)
-            .listStyle(.grouped)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarBackground(Color.theme.background, for: .navigationBar)
             .navigationTitle("Settings")
+            //.toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     XMarkButton(dismiss: _dismiss)
+                        .foregroundColor(Color.theme.secondaryText)
                 }
             }
         }
+        .scrollContentBackground(.hidden)
     }
 }
 
@@ -78,6 +84,7 @@ extension SettingsView {
             .font(.callout)
         } header: {
             Text("Developer")
+                .foregroundColor(Color.theme.secondaryText)
         }
     }
     private var coinGeckoSection: some View {
@@ -96,6 +103,7 @@ extension SettingsView {
             .padding(.vertical)
         } header: {
             Text("CoinGecko")
+                .foregroundColor(Color.theme.secondaryText)
         }
     }
     private var swiftfulThinkingSection: some View {
@@ -113,6 +121,7 @@ extension SettingsView {
                 .font(.callout)
         } header: {
             Text("Swiftful Thinking")
+                .foregroundColor(Color.theme.secondaryText)
         }
     }
     private var applicationSection: some View {
@@ -126,6 +135,7 @@ extension SettingsView {
             .font(.callout)
         } header: {
             Text("Application")
+                .foregroundColor(Color.theme.secondaryText)
         }
     }
 }

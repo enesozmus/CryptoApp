@@ -37,7 +37,11 @@ class PortfolioDataService {
             add(coin: coin, amount: amount)
         }
     }
-    
+    func removeCoinFromPortfolio(coin: CoinModel) {
+        if let entity = savedEntities.first(where: { $0.coinID == coin.id }) {
+            delete(entity: entity)
+        }
+    }
     
     // MARK: PRIVATE
     private func getPortfolio() {

@@ -28,11 +28,14 @@ struct ManagePortfolioView: View {
                         portfolioInputSection
                     }
                 }
-                .background(Color.theme.background.ignoresSafeArea())
                 .navigationTitle("Edit Portfolio")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         XMarkButton(dismiss: _dismiss)
+                            .onDisappear {
+                                vm.searchText = ""
+                            }
+                            .foregroundColor(Color.theme.secondaryText)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         trailingNavBarButtons
@@ -44,6 +47,7 @@ struct ManagePortfolioView: View {
                     }
                 }
             }
+            .background(Color.theme.background.ignoresSafeArea())
         }
     }
 }
@@ -101,6 +105,7 @@ extension ManagePortfolioView {
                 Text(getCurrentValue().asCurrencyWith2Decimals())
             }
         }
+        .foregroundStyle(Color.theme.secondaryText)
         .animation(.none, value: selectedCoin?.id)
         .padding()
         .font(.headline)
@@ -113,6 +118,7 @@ extension ManagePortfolioView {
                 saveButtonPressed()
             } label: {
                 Text("Save".uppercased())
+                    .foregroundColor(Color.theme.secondaryText)
             }
             .opacity(
                 (selectedCoin != nil && selectedCoin?.currentHoldings != Double(quantityText.replacingOccurrences(of: ",", with: ".")))
